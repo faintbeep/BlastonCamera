@@ -15,10 +15,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using System;
 using UnityEngine;
+using BlastonCameraBehaviour.Config;
 
 namespace BlastonCameraBehaviour
 {
@@ -35,7 +35,6 @@ namespace BlastonCameraBehaviour
     // The class must implement IPluginCameraBehaviour to be recognized by LIV as a plugin.
     public class BlastonCameraPlugin : IPluginCameraBehaviour
     {
-
         // Store your settings localy so you can access them.
         BlastonCameraPluginSettings _settings = new BlastonCameraPluginSettings();
 
@@ -58,12 +57,11 @@ namespace BlastonCameraBehaviour
 
         // Localy store the camera helper provided by LIV.
         PluginCameraHelper _helper;
-        ICameraAngle angle;
+        Config.Config config;
 
         // Constructor is called when plugin loads
         public BlastonCameraPlugin()
         {
-            angle = new AutoAngleManager();
         }
 
         // OnActivate function is called when your camera behaviour was selected by the user.
@@ -71,6 +69,14 @@ namespace BlastonCameraBehaviour
         public void OnActivate(PluginCameraHelper helper)
         {
             _helper = helper;
+            string filepath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LIV/BlastonCamera.json");
+            try
+            {
+                config = ConfigFileLoader.LoadFile(new PlayerHelper(helper), filepath);
+            } catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
         }
 
         // OnSettingsDeserialized is called only when the user has changed camera profile or when the.
@@ -92,8 +98,11 @@ namespace BlastonCameraBehaviour
         // and has not been updated yet. If that is a concern, it is recommended to use OnLateUpdate instead.
         public void OnUpdate()
         {
-            Transform camera = angle.GetCameraPose();
-            _helper.UpdateCameraPose(camera.position, camera.rotation, _settings.fov);
+            if (config.motions != null)
+            {
+                Transform camera = config.motions["default"].Transform(Time.deltaTime);
+                _helper.UpdateCameraPose(camera.position, camera.rotation, _settings.fov);
+            }
         }
 
         // OnLateUpdate is called after OnUpdate also everyframe and has a higher chance that transform updates are more recent.
