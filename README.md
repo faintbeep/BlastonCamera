@@ -110,7 +110,7 @@ Or a selfie cam held in the player's right hand and looking at their head:
 
 #### Orbit motion
 
-A motion that revolves around another motion, looking at the center point by default. This takes a `center` motion, an `offset` vector representing the starting distance from the center, and a 2d `direction` vector.
+A motion that revolves around another motion, looking at the center point by default. This takes a `center` motion, an `offset` vector representing the starting distance from the center, a 2d `direction` vector and a `speed` in degrees per second.
 
 The `direction` vector allows orbiting in any direction rather than just horizontally. If you imagine your head at the `center` point and you are looking at the `offset` point, `direction.x` is the right/left direction and `direction.y` is the up/down direction from that point of view.
 
@@ -124,7 +124,8 @@ So for example, starting 2m in front and orbiting the player's head horizontally
         "bodyPart": "head"
     },
     "offset": { "x": 0, "y": 0, "z": 2 }, // 2m in front
-    "direction": { "x": 1, "y": 0 } // To the right but not up or down
+    "direction": { "x": 1, "y": 0 }, // To the right but not up or down
+    "speed": 30
 }
 ```
 
@@ -138,7 +139,8 @@ However with the same direction but a different offset this can orbit at a 45 de
         "bodyPart": "head"
     },
     "offset": { "x", "y": -2, "z": 2 }, // 2m in front and below
-    "direction": { "x": 1, "y": 0 } // If you are looking down at the offset, then "right" takes you on an orbit up over your shoulder
+    "direction": { "x": 1, "y": 0 }, // If you are looking down at the offset, then "right" takes you on an orbit up over your shoulder
+    "speed": 30
 }
 ```
 
