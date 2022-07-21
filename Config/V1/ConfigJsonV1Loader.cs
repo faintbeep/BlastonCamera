@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
@@ -14,11 +13,6 @@ namespace BlastonCameraBehaviour.Config
         private Config config;
         public Config Config { get => config; }
 
-        private static Exception JsonError(JToken token, string message)
-        {
-            throw new InvalidDataException(message + " at " + token.Path);
-        }
-
         public ConfigJsonV1Loader(IPlayerHelper helper, string jsonText)
         {
             SchemaV1Validator validator = new SchemaV1Validator();
@@ -30,7 +24,7 @@ namespace BlastonCameraBehaviour.Config
                 {
                     Debug.LogError(message);
                 }
-                throw new Exception("Invalid config");
+                throw new ConfigException("Invalid config");
             }
 
             _helper = helper;
@@ -90,7 +84,7 @@ namespace BlastonCameraBehaviour.Config
                     motion = OrbitMotionFromJson(obj);
                     break;
                 default:
-                    throw JsonError(obj.Property("type"), "Motion must have a known type");
+                    throw new ConfigException(obj.Property("type"), "Motion must have a known type");
             }
 
             JProperty lookAtToken = obj.Property("lookAt");
@@ -132,7 +126,7 @@ namespace BlastonCameraBehaviour.Config
                 }
             }
 
-            throw JsonError(obj.Property("bodyPart").Value, "PlayerMotion must use a known bodyPart");
+            throw new ConfigException(obj.Property("bodyPart").Value, "PlayerMotion must use a known bodyPart");
         }
 
         public TweenMotion TweenMotionFromJson(JObject obj)
@@ -155,7 +149,7 @@ namespace BlastonCameraBehaviour.Config
                 }
             }
 
-            throw JsonError(obj.Property("function").Value, "TweenMotion must use a known function");
+            throw new ConfigException(obj.Property("function").Value, "TweenMotion must use a known function");
         }
 
         public StaticMotion StaticMotionFromJson(JObject obj)
@@ -174,10 +168,10 @@ namespace BlastonCameraBehaviour.Config
                     }
                     catch (KeyNotFoundException)
                     {
-                        throw JsonError(position, "Position " + positionName + " not found");
+                        throw new ConfigException(position, "Position " + positionName + " not found");
                     }
                 default:
-                    throw JsonError(position, "Position is unknown type");
+                    throw new ConfigException(position, "Position is unknown type");
             }
         }
 
@@ -198,7 +192,7 @@ namespace BlastonCameraBehaviour.Config
                 }
             }
 
-            throw JsonError(obj.Property("function").Value, "Transition must use a known function");
+            throw new ConfigException(obj.Property("function").Value, "Transition must use a known function");
         }
 
         public StoryboardMotion.Shot ShotFromJson(JObject obj)

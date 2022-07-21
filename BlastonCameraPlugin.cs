@@ -69,7 +69,7 @@ namespace BlastonCameraBehaviour
         public void OnActivate(PluginCameraHelper helper)
         {
             _helper = helper;
-            string filepath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LIV/BlastonCamera.json");
+            string filepath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "LIV/Plugins/CameraBehaviours/BlastonCamera.json");
             try
             {
                 config = ConfigFileLoader.LoadFile(new PlayerHelper(helper), filepath);

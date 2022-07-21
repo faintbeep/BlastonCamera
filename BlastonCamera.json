@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "positions": {
+        "arenaCenter": { "x": 0.0, "y": 0.6, "z": 1.6 },
+        "highCenter": { "x": 2.5, "y": 5.0, "z": 1.6 },
+        "lowCenter": { "x": 4.0, "y": 1.8, "z": 1.6 },
+        "playerSide": { "x": 3.5, "y": 1.8, "z": -1.6 },
+        "opponentSide": { "x": 3.5, "y": 1.8, "z": 4.8 }
+    },
+    "motions": {
+        "default": {
+            "type": "storyboard",
+            "shots": [
+                {
+                    "type": "static",
+                    "position": "playerSide",
+                    "lookAt": {
+                        "type": "static",
+                        "position": "arenaCenter"
+                    },
+                    "duration": 15
+                },
+                {
+                    "type": "static",
+                    "position": "opponentSide",
+                    "lookAt": {
+                        "type": "static",
+                        "position": "arenaCenter"
+                    },
+                    "duration": 15
+                },
+                {
+                    "type": "static",
+                    "position": "lowCenter",
+                    "lookAt": {
+                        "type": "static",
+                        "position": "arenaCenter"
+                    },
+                    "duration": 15
+                },
+                {
+                    "type": "static",
+                    "position": "highCenter",
+                    "lookAt": {
+                        "type": "static",
+                        "position": "arenaCenter"
+                    },
+                    "duration": 15
+                }
+            ],
+            "transition": {
+                "function": "easeInOutCubic",
+                "duration": 1
+            },
+            "repeat": true
+        }
+    }
+}

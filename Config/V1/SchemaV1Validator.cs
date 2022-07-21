@@ -46,7 +46,18 @@ namespace BlastonCameraBehaviour.Config
         public static string EasingSchema = @"{
             'enum': [
                 'linear',
-                'easeInOutCubic'
+                'easeInSine',
+                'easeOutSine',
+                'easeInOutSine',
+                'easeInQuad',
+                'easeOutQuad',
+                'easeInOutQuad',
+                'easeInCubic',
+                'easeOutCubic',
+                'easeInOutCubic',
+                'easeInBounce',
+                'easeOutBounce',
+                'easeInOutBounce'
             ]
         }";
 
