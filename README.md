@@ -8,6 +8,8 @@ You can edit the config file to configure the camera. Deselecting and reselectin
 
 ## Config file format
 
+If you like json schemas, [see the code here](./Config/V1/SchemaV1Validator.cs).
+
 ### The main BlastonCamera.json
 ```json
 {
