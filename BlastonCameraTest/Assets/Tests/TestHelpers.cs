@@ -20,6 +20,8 @@ public class TestHelpers
         }
 
         public IMotion LookAt { set { } }
+
+        public void Reset() { }
     }
     public static bool QuaternionEquals(Quaternion q1, Quaternion q2)
     {

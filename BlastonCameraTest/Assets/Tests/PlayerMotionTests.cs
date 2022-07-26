@@ -68,20 +68,19 @@ public class PlayerMotionTests
     {
         var playerLeftHand = new GameObject().transform;
         var helper = new TestPlayerHelper() { _playerLeftHand = playerLeftHand };
-        var offset = new GameObject().transform;
-        var playerMotion = new PlayerMotion(helper, PlayerMotion.BodyPart.playerLeftHand, offset);
+        var playerMotion = new PlayerMotion(helper) { bodyPart = PlayerMotion.BodyPart.leftHand };
 
         playerLeftHand.position = new Vector3(1f, 2f, 0.5f);
         playerLeftHand.rotation = Quaternion.AngleAxis(90, Vector3.up);
-        offset.position = new Vector3(0f, 0.5f, -0.5f);
-        offset.rotation = Quaternion.AngleAxis(-90, Vector3.up);
+        playerMotion.offset.x = 0;
+        playerMotion.offset.y = 0.5f;
+        playerMotion.offset.z = -0.5f;
 
         var transform = playerMotion.Transform(1f);
         var expectedTransform = new GameObject().transform;
         expectedTransform.position = new Vector3(0.5f, 2.5f, 0.5f);
         expectedTransform.rotation = Quaternion.identity;
         Assert.That(expectedTransform.position == transform.position, "transform should be offset from player");
-        Assert.That(TestHelpers.QuaternionEquals(expectedTransform.rotation, transform.rotation), "rotation should be offset from player");
     }
 
     [Test]
@@ -90,7 +89,7 @@ public class PlayerMotionTests
         var playerHead = new GameObject().transform;
         var lookAt = new TestHelpers.TestMotion(new Vector3(0.0f, 0.0f, 1.0f), Quaternion.identity);
 
-        var helper = new TestPlayerHelper() { _playerHead = playerHead};
+        var helper = new TestPlayerHelper() { _playerHead = playerHead };
         var firstPerson = PlayerMotion.FirstPerson(helper);
         firstPerson.LookAt = lookAt;
 

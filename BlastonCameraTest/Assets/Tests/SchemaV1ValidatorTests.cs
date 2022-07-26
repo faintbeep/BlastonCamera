@@ -263,7 +263,7 @@ public class SchemaV1ValidatorTests
             },
             'function': 'linear',
             'delay': 1,
-            'duration': 2
+            'transitionDuration': 2
         }");
 
         Assert.IsTrue(validator.IsValid("tweenMotion.json", tween1), "tween1 should be valid");

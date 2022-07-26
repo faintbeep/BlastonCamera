@@ -6,9 +6,9 @@ namespace BlastonCameraBehaviour.Motions
     {
         private IMotion _center;
         private Vector3 _offset;
-        private Vector3 _satellite;
         private float _speed;
-        private Quaternion _rotation;
+        private Vector3 axis;
+        private float elapsedTime;
 
         private IMotion lookAt;
         private Transform transform;
@@ -17,26 +17,29 @@ namespace BlastonCameraBehaviour.Motions
 
         public OrbitMotion(IMotion center, Vector3 offset, Vector2 direction, float speed)
         {
+            elapsedTime = 0;
+
             _center = center;
             _offset = offset;
-            _satellite = offset;
+            _speed = speed;
 
             Vector3 direction3 = new Vector3(direction.x, direction.y, 0);
             direction3 = Quaternion.FromToRotation(Vector3.forward, offset) * direction3;
-
-            Vector3 axis = Vector3.Cross(offset, direction3);
-            _rotation = Quaternion.AngleAxis(179.99f, axis);
-            _speed = speed;
+            axis = Vector3.Cross(offset, direction3);
 
             transform = new GameObject().transform;
         }
 
         public Transform Transform(double deltaTime)
         {
-            _satellite = Quaternion.RotateTowards(Quaternion.identity, _rotation, _speed * (float)deltaTime) * _satellite;
+            elapsedTime += (float)deltaTime;
+
+            Quaternion rotation = Quaternion.AngleAxis(_speed * (float)elapsedTime, axis);
+
+            Vector3 position = rotation * _offset;
 
             Transform center = _center.Transform(deltaTime);
-            transform.position = center.position + _satellite;
+            transform.position = center.position + position;
             transform.LookAt(lookAt != null ? lookAt.Transform(deltaTime) : center);
 
             return transform;
@@ -44,8 +47,9 @@ namespace BlastonCameraBehaviour.Motions
 
         public void Reset()
         {
-            _satellite = _offset;
+            elapsedTime = 0;
             _center.Reset();
+
             if (lookAt != null)
             {
                 lookAt.Reset();

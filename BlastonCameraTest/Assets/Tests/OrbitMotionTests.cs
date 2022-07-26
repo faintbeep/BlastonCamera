@@ -65,6 +65,5 @@ public class OrbitMotionTests
         expected.position = new Vector3(0, 1f, 1f);
         expected.rotation = Quaternion.AngleAxis(90, Vector3.up);
         Assert.That(TestHelpers.QuaternionEquals(expected.rotation, transform.rotation), "should look at lookAt");
-    
     }
 }
